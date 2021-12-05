@@ -1,0 +1,5 @@
+curl -i -d "{\"receiver_email\": \"mutugimutuma@gmail.com\", \"receiver_name\": \"Mutugi\" ,\"mail_message\": \"Hello this is a test Email from HNGi7\"}" localhost:8000/mailer
+
+curl -i -d "{\"tweet_message\": \"Hello World\"}" localhost:8000/tweet
+
+curl -i -d "{\"receiver_number\": \"+254748104485\", \"sms_message\": \"Hi Mutugi\"}" localhost:8000/sms

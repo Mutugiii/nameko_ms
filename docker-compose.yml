@@ -1,0 +1,64 @@
+version: "2"
+services:
+
+  rabbit:
+    image: rabbitmq:3-management
+    ports:
+        - "15672:15672"
+
+  mailer:
+    build:
+      context: mailer
+    depends_on:
+      - rabbit
+    environment:
+        RABBIT_PASSWORD: "guest"
+        RABBIT_USER: "guest"
+        RABBIT_HOST: "rabbit"
+        RABBIT_PORT: "5672"
+        MAIL_USERNAME: ${MAIL_USERNAME}
+        MAIL_PASSWORD: ${MAIL_PASSWORD}
+        MAIL_PORT: ${MAIL_PORT}
+        MAIL_SERVER: ${MAIL_SERVER}
+
+  tweetbot:
+    build:
+      context: tweetbot
+    depends_on:
+      - rabbit
+    environment:
+        RABBIT_PASSWORD: "guest"
+        RABBIT_USER: "guest"
+        RABBIT_HOST: "rabbit"
+        RABBIT_PORT: "5672"
+        TWITTER_ACCESS_TOKEN: ${TWITTER_ACCESS_TOKEN}
+        TWITTER_ACCESS_TOKEN_SECRET: ${TWITTER_ACCESS_TOKEN_SECRET}
+        TWITTER_API_KEY: ${TWITTER_API_KEY}
+        TWITTER_API_SECRET_KEY: ${TWITTER_API_SECRET_KEY}
+
+  sms:
+    build:
+      context: sms
+    depends_on:
+      - rabbit
+    environment:
+        RABBIT_PASSWORD: "guest"
+        RABBIT_USER: "guest"
+        RABBIT_HOST: "rabbit"
+        RABBIT_PORT: "5672"
+        TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID}
+        TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
+        TWILIO_PHONE_NUMBER: ${TWILIO_PHONE_NUMBER}
+
+  gateway:
+    build:
+      context: gateway
+    depends_on:
+      - rabbit
+    ports:
+        - "8000:8000"
+    environment:
+        RABBIT_PASSWORD: "guest"
+        RABBIT_USER: "guest"
+        RABBIT_HOST: "rabbit"
+        RABBIT_PORT: "5672"

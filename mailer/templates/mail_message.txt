@@ -1,0 +1,3 @@
+Dear ${PERSON_NAME}
+
+${MAIL_MESSAGE}
