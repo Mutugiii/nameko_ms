@@ -1,0 +1,32 @@
+# This workflow will install Python dependencies and run tests on the Python Flask application
+
+name: Test Python Flask application
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.60
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.60"
+    - name: Target flask app and Install dependencies
+      run: |
+        cd flask_blog
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Test with unittest
+      run: |
+        python manage.py test
