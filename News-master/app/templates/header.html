@@ -1,0 +1,40 @@
+<div class="navbar navbar-inverse" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"> News </a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="/sources">Sources</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="col-md-8" style="font-size: 2rem; font-weight: 700;">
+        News Post
+    </div>
+    <form class="form-inline col-md-4">
+        <input type="text" name="article_query" placeholder="" class="form-control">
+        <input type="submit" value="Submit Search" class="btn" style="color: white; background-color: #222222;">
+    </form>
+</div>
+<br>
+<div class="container-fluid sticky-top" style="color: white; background-color: #222222; height: 55px;">
+    <div class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner" style="font-size:15px;">
+            {% for article in general %}
+            <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
+                <p style="color: white; padding-left:5px;text-align:center;">{{article.description}}  <span><a href="{{article.url}}"> read more</a></span></p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

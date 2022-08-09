@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+{% import 'macros.html' as macro%}
+
+{% block title%}
+Search Results
+{% endblock %}
+
+</div>
+{% block content %}
+<hr>
+    <div class="container">
+        <div class="row">
+            <h4>{{ message }}</h4>
+            <h4> Found {{ search| count }} matches </h4>
+            <hr>
+            <ul>
+                {{ macro.displayArticles(search)}}
+            </ul>
+
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,7 @@
+__pycache__/
+virtual/
+*.pyc
+instance
+*.swp
+start.sh
+.vscode
