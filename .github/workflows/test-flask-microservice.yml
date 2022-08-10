@@ -24,9 +24,15 @@ jobs:
         python-version: "3.6.15"
     - name: Target flask app and Install dependencies
       run: |
-        cd flask_blog
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        DIR="/flask_blog"
+        if [ -d "$DIR" ]; then
+          cd flask_blog
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        else
+          echo "Directory ${DIR} Does not exist"
+          exit 1
+        fi
     - name: Test with unittest
       run: |
         python manage.py test
