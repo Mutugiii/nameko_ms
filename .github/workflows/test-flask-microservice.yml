@@ -34,4 +34,8 @@ jobs:
         fi
     - name: Test with unittest
       run: |
-        python manage.py test
+        if [ -d "/flask_blog" ]; then
+          python manage.py test
+        else
+          exit 0
+        fi
