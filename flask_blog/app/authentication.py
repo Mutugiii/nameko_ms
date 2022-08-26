@@ -28,7 +28,7 @@ class Auth():
         'status': 'success',
         'token': jwt.encode(
           payload,
-          os.environ.get('JWT_SECRET_KEY'),
+          os.environ.get("FLASK_JWT_SECRET_KEY"),
           algorithm='HS256'
         )
       } 
@@ -49,7 +49,7 @@ class Auth():
       'error': {}
     }
     try:
-      payload = jwt.decode(token, os.environ.get('JWT_SECRET_KEY'), algorithms=['HS256'])
+      payload = jwt.decode(token, os.environ.get('FLASK_JWT_SECRET_KEY'), algorithms=['HS256'])
       res['data'] = {
         'user_id': payload['sub']
       }

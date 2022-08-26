@@ -14,6 +14,7 @@ def create_app(config_name):
 
   # Creating configurations
   app.config.from_object(config_options[config_name])
+  print(app.config)
 
   # Initialize extensions
   db.init_app(app)

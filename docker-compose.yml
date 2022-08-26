@@ -1,10 +1,20 @@
-version: "2"
+version: "3"
 services:
 
   rabbit:
     image: rabbitmq:3-management
     ports:
         - "15672:15672"
+
+  db:
+    image: postgres:14-alpine
+    volumes:
+    - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_PASSWORD: ${FLASK_POSTGRES_PASSWORD}
+      POSTGRES_USER: ${FLASK_POSTGRES_USER}
+      POSTGRES_DB: ${FLASK_POSTGRES_DB}
+
 
   mailer:
     build:
@@ -50,6 +60,29 @@ services:
         TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
         TWILIO_PHONE_NUMBER: ${TWILIO_PHONE_NUMBER}
 
+  flask_blog:
+    build:
+      context: flask_blog
+    depends_on:
+      - rabbit
+      - db
+      - mailer
+    ports:
+      - "5000:5000"
+    environment:
+      RABBIT_PASSWORD: "guest"
+      RABBIT_USER: "guest"
+      RABBIT_HOST: "rabbit"
+      RABBIT_PORT: "5672"
+      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY}
+      FLASK_TEST_DATABASE_URL: ${FLASK_TEST_DATABASE_URL}
+      FLASK_DATABASE_URL: ${FLASK_DATABASE_URL}
+      FLASK_TRACK_MODIFICATIONS: ${FLASK_TRACK_MODIFICATIONS}
+      FLASK_DEBUG: ${FLASK_DEBUG}
+      FLASK_APP: ${FLASK_APP}
+      FLASK_ENV: ${FLASK_ENV}
+      FLASK_JWT_SECRET_KEY: ${FLASK_JWT_SECRET_KEY}    
+
   gateway:
     build:
       context: gateway
@@ -62,3 +95,6 @@ services:
         RABBIT_USER: "guest"
         RABBIT_HOST: "rabbit"
         RABBIT_PORT: "5672"
+
+volumes:
+  postgres_data:
