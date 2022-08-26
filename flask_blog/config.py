@@ -11,7 +11,8 @@ class Config:
     DEBUG = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     JWT_SECRET_KEY = os.environ.get('FLASK_JWT_SECRET_KEY')
-    AMQP_URI = f"amqp://{os.getenv('RABBIT_USER')}:{os.getenv('RABBIT_PASSWORD')}@{os.getenv('RABBIT_HOST')}:{os.getenv('RABBIT_PORT')}/"
+    AMQP_URI = os.environ.get('FLASK_AMQP_URI')
+    # NAMEKO_AMQP_URI = os.environ.get('FLASK_AMQP_URI')
 
 
 class ProdConfig(Config):

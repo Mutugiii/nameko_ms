@@ -2,11 +2,13 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
+from flask_nameko import FlaskPooledClusterRpcProxy
 from config import config_options  
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 migrate = Migrate()
+rpc = FlaskPooledClusterRpcProxy()
 
 def create_app(config_name):
   '''Application-factory format'''
@@ -14,12 +16,15 @@ def create_app(config_name):
 
   # Creating configurations
   app.config.from_object(config_options[config_name])
-  print(app.config)
+  app.config.update(dict(
+    NAMEKO_AMQP_URI='amqp://guest:guest@rabbit:5672/'
+  ))
 
   # Initialize extensions
   db.init_app(app)
   bcrypt.init_app(app)
   migrate.init_app(app, db)
+  rpc.init_app(app)
 
   # Registering blueprints
   from .main import main as main_blueprint

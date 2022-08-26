@@ -1,8 +1,8 @@
 import os
 from dotenv import load_dotenv
 from flask import request, g, json, Response
-from nameko.standalone.rpc import ServiceRpcProxy
 from . import main
+from .. import rpc
 from ..authentication import Auth
 from ..models.BlogModel import Blogpost, BlogpostSchema
 from ..models.UserModel import User, UserRoleEnum
@@ -11,10 +11,6 @@ load_dotenv()
 
 blog_schema = BlogpostSchema()
 blogs_schema = BlogpostSchema(many=True)
-
-def rpc_proxy(service):
-  config = {'AMQP_URI': os.environ.get('FLASK_AMQP_URI')}
-  return ServiceRpcProxy(service, config) 
 
 def custom_response(res, code):
   '''
@@ -67,12 +63,11 @@ def create_blog():
     blog = Blogpost(data)
     blog.save()
     
-    with rpc_proxy('mailer_service') as mailer_rpc:
-      mailer_rpc.create(
-        current_user.email,
-        current_user.username,
-        f'New blogpost {data["title"]} created'
-      )
+    result = rpc.mailer_service.create(
+      current_user.email,
+      current_user.username,
+      f'New blogpost {data["title"]} created'
+    )
 
     serialized_blog = blog_schema.dump(blog)
     return custom_response({
@@ -139,12 +134,11 @@ def update_blog(id):
 
     blog.update(data)
 
-    with rpc_proxy('mailer_service') as mailer_rpc:
-      mailer_rpc.create(
-        current_user.email,
-        current_user.username,
-        f'Blogpost {data["title"]} updated'
-      )
+    rpc.mailer_service.create(
+      current_user.email,
+      current_user.username,
+      f'New blogpost {data["title"]} created'
+    )
 
     # Serialize updated data to return as json
     serialized_blog = blog_schema.dump(blog)
