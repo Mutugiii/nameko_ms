@@ -30,7 +30,7 @@ class MailerService:
         server.login(mail_username, mail_password)
 
         message = MIMEMultipart("alternative")
-        message["Subject"] = "HNGi7"
+        message["Subject"] = "Blog"
         message["From"] = mail_username
         message["To"] = receiver_email
         message_text = read_template('/templates/mail_message.txt')
