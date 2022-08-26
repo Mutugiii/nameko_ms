@@ -6,6 +6,12 @@ Microservices using [nameko](https://github.com/nameko/nameko) framework
 
 - Clone/Download the repository
 - Create a .env file and add tokens/secrets for twitter to use the Twitter bot microservices, twilio to use sms messaging microservice & google using sign-in with app password to use the email microservice.(More info on app passwords [here](https://support.google.com/accounts/answer/185833)). You can use the *.env.example* as a template guide.
+    
+    **Credentials Links**
+    - https://developer.twitter.com/en
+    - https://www.twilio.com/
+    - https://support.google.com/mail/answer/185833?hl=en (Google App Passwords)
+
 - Update/Replace the email message templates based on your preference. They are located in the `mailer/templates` directory
 - Make sure docker and docker-compose is installed in your system and start a RabbitMQ container.
 ```
@@ -15,12 +21,13 @@ Microservices using [nameko](https://github.com/nameko/nameko) framework
 ```
 - Create a python virtual environment and install nameko:
 ```
-    python3.6 -m venv --without-pip venv
+    python3.8 -m venv --without-pip venv
     source venv/bin/activate
     curl https://bootstrap.pypa.io/get-pip.py | python
 
     pip install nameko
 ```
+
 - Run the command `docker-compose up` to run the app.
 
 ---

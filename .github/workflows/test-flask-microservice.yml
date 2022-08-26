@@ -1,0 +1,41 @@
+# This workflow will install Python dependencies and run tests on the Python Flask application
+
+name: Test Python Flask application
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.6.15
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.6.15"
+    - name: Target flask app and Install dependencies
+      run: |
+        if [ -d "/flask_blog" ]; then
+          cd flask_blog
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        else
+          echo "Directory Does not exist"
+          exit 0
+        fi
+    - name: Test with unittest
+      run: |
+        if [ -d "/flask_blog" ]; then
+          python manage.py test
+        else
+          exit 0
+        fi
